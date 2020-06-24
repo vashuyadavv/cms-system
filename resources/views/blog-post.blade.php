@@ -18,7 +18,10 @@
         <hr>
 
         <!-- Preview Image -->
-        <img class="img-fluid rounded" src="{{ $post->post_image }}" alt="">
+        <img class="img-fluid rounded" src="{{ filter_var($post->post_image, FILTER_VALIDATE_URL)
+                            ? $post->post_image
+                            : '/storage/' . $post->post_image
+                             }}"  alt="wait for it">
 
         <hr>
 

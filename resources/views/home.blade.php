@@ -10,7 +10,10 @@
         <!-- Blog Post -->
         @foreach($posts as $post)
           <div class="card mb-4">
-            <img class="card-img-top" src="{{ $post->post_image }}" alt="Card image cap">
+            <img class="card-img-top" src="{{ filter_var($post->post_image, FILTER_VALIDATE_URL)
+                            ? $post->post_image
+                            : '/storage/' . $post->post_image
+                             }}"  alt="wait for it">
             <div class="card-body">
               <h2 class="card-title">{{ $post->title }}</h2>
               <p class="card-text">{{Str::limit($post->body, '50', '....') }}</p>
