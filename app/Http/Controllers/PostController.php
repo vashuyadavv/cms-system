@@ -9,7 +9,10 @@ class PostController extends Controller
 {
     public function index()
     {
-        return view('admin.posts.index', ['posts' => Post::all()]);    
+        //$posts = Post::all();
+        $posts = auth()->user()->posts()->paginate(2);
+        //dd($posts);
+        return view('admin.posts.index', ['posts' => $posts]);    
     }
 
     public function show(Post $post)
@@ -24,6 +27,7 @@ class PostController extends Controller
 
     public function store()
     {
+        $this->authorize('create', Post::class);
         $inputs=request()->validate([ 
             'title' => 'required|min:8|max:255',
             'post_image' => 'file',
@@ -42,11 +46,14 @@ class PostController extends Controller
 
     public function edit(Post $post)
     {
+        $this->authorize('view', $post);
+        //if(auth()->user()->can('view', $post)){}
         return view('admin.posts.edit', compact('post'));
     } 
 
     public function delete(Post $post)
     {
+        $this->authorize('delete', $post);
         $post->delete();
 
         session()->flash('message', 'Post is deleted');
@@ -70,8 +77,11 @@ class PostController extends Controller
 
         $post->title = $inputs['title'];
         $post->body = $inputs['body'];
-        //$post->save();
-        auth()->user()->posts()->save($post);
+        $this->authorize('update', $post);
+        
+        
+        $post->save();
+        //auth()->user()->posts()->save($post);
         session()->flash('update-message', 'Post is updated');
         return redirect()->route('posts.index');
 

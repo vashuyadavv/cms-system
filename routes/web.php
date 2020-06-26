@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Post;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,4 +33,5 @@ Route::middleware('auth')->group(function(){
     Route::delete('admin/posts/{post}/delete', 'PostController@delete')->name('post.delete');
     Route::put('admin/posts/{post}/update', 'PostController@update')->name('post.update');
 });
+
 
