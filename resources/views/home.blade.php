@@ -1,4 +1,4 @@
-<x-home-master>
+<x-home.home-master>
 
     @section('content')
         <h1>HOME</h1>
